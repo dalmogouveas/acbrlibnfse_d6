@@ -1,0 +1,4 @@
+# Ignorar todos os arquivos DLL
+*.dll
+# Ignorar conteúdo da pasta acbr
+acbr/*
