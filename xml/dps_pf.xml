@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GerarNFSeEnvio
+  xmlns="http://www.sped.fazenda.gov.br/nfse"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  versao="1.01">
+
+  <DPS>
+    <infDPS Id="330455723363649900018700001000000000000001">
+
+      <ideDPS>
+        <tpAmb>2</tpAmb>
+        <dhEmi>2026-01-01T10:00:00-03:00</dhEmi>
+        <cMun>3304557</cMun>
+        <serie>00001</serie>
+        <nDPS>000000000000001</nDPS>
+      </ideDPS>
+
+      <emit>
+        <CNPJ>33636499000187</CNPJ>
+        <IM>4178670</IM>
+        <xNome>PRESTADOR TESTE</xNome>
+      </emit>
+
+      <tomador>
+        <CPF>00000000000</CPF>
+        <xNome>TOMADOR PF TESTE</xNome>
+      </tomador>
+
+      <serv>
+        <cMunIncid>3304557</cMunIncid>
+        <xServ>SERVICO DE TESTE</xServ>
+
+        <valores>
+          <vServ>100.00</vServ>
+        </valores>
+
+        <discriminacao>Servico de teste - DPS.</discriminacao>
+      </serv>
+
+    </infDPS>
+  </DPS>
+
+</GerarNFSeEnvio>

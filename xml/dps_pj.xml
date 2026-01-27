@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DPS xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.01">
+  <infDPS Id="330455723363649900018700001000000000000001">
+
+    <ideDPS>
+      <tpAmb>2</tpAmb>
+      <dhEmi>2026-01-01T10:00:00-03:00</dhEmi>
+      <cMun>3304557</cMun>
+      <serie>00001</serie>
+      <nDPS>000000000000001</nDPS>
+    </ideDPS>
+
+    <emit>
+      <CNPJ>33636499000187</CNPJ>
+      <IM>4178670</IM>
+      <xNome>PRESTADOR TESTE</xNome>
+      <enderEmit>
+        <xLgr>RUA EXEMPLO</xLgr>
+        <nro>100</nro>
+        <xBairro>CENTRO</xBairro>
+        <cMun>3304557</cMun>
+        <UF>RJ</UF>
+        <CEP>20000000</CEP>
+      </enderEmit>
+    </emit>
+
+    <tomador>
+      <CNPJ>00000000000000</CNPJ>
+      <xNome>TOMADOR PJ TESTE</xNome>
+      <enderTomador>
+        <xLgr>AV EXEMPLO</xLgr>
+        <nro>200</nro>
+        <xBairro>CENTRO</xBairro>
+        <cMun>3304557</cMun>
+        <UF>RJ</UF>
+        <CEP>20000000</CEP>
+      </enderTomador>
+    </tomador>
+
+    <serv>
+      <cMunIncid>3304557</cMunIncid>
+      <cServ>0107</cServ>
+      <xServ>DESCRICAO DO SERVICO</xServ>
+      <valores>
+        <vServ>100.00</vServ>
+        <vDescIncond>0.00</vDescIncond>
+        <vDescCond>0.00</vDescCond>
+        <vISS>0.00</vISS>
+        <aliqISS>0.00</aliqISS>
+      </valores>
+      <discriminacao>Servico prestado - teste.</discriminacao>
+    </serv>
+
+  </infDPS>
+</DPS>
