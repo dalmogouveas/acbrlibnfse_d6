@@ -6,9 +6,7 @@ uses
   Windows, SysUtils;
 
 // IMPORTANT:
-// - Estas declaracoes DEVEM bater com a DLL (ACBrNFSe32.dll) que voce esta usando.
-// - Alinhado com o DEMO oficial VB6 do ACBrLibNFSe (build StdCall).
-// - Divergencias aqui causam corrupcao de pilha (AV) mesmo quando o retorno parece OK.
+// - Estas declaracoes DEVEM bater com a DLL (ACBrNFSe32.dll).
 
 type
   // Basico

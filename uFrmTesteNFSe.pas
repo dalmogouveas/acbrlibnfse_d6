@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Forms, Controls, StdCtrls,
-  uACBrNFSeLib, ExtCtrls;
+  uACBrNFSeLib, ExtCtrls, Dialogs;
 
 type
   TFrmTesteNFSe = class(TForm)
@@ -26,6 +26,9 @@ type
     lblCertSerie: TLabel;
     edtCertSerie: TEdit;
     btnAplicarCert: TButton;
+    btnCarregarINI: TButton;
+    btnCarregarXMLTeste: TButton;
+    Od: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnInicializarClick(Sender: TObject);
@@ -37,6 +40,8 @@ type
     procedure btnAplicarCertClick(Sender: TObject);
     procedure MemoLogKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure btnCarregarINIClick(Sender: TObject);
+    procedure btnCarregarXMLTesteClick(Sender: TObject);
   private
     FUltimaResposta: AnsiString;
 
@@ -54,6 +59,8 @@ type
     procedure ACBrSetConfigValue(const Sessao, Chave, Valor: AnsiString);
     procedure ConfigurarPathsBasicos;
     procedure ConfigurarCertificado;
+
+    procedure habilitarBotoes(valor: boolean);
   end;
 
 var
@@ -62,6 +69,8 @@ var
 implementation
 
 {$R *.DFM}
+
+uses uTesteRapidoNFSe;
 
 procedure AddPath(const APath: string);
 var
@@ -109,20 +118,26 @@ begin
   AddPath(BaseDir + 'acbr\libxml2');
   AddPath(BaseDir + 'acbr\openssl');
 
-  if not CarregarACBrNFSe(BaseDir + 'acbr\ACBrNFSe32.dll') then
+  if not CarregarACBrNFSe(BaseDir + 'acbr\ACBrNFSe32.dll') then begin
+    btnInicializar.Enabled := False;
     MemoLog.Lines.Add('Erro ao carregar ACBrNFSe32.dll')
-  else
+  end else begin
+    btnInicializar.Enabled := True;
     MemoLog.Lines.Add('DLL carregada com sucesso');
+  end;
 
-  // Defaults
-  if Assigned(rbCertWinStore) then
-    rbCertWinStore.Checked := True;
+  // Padr„o - Windows Store
+  if Assigned(rbCertWinStore)
+    then rbCertWinStore.Checked := True;
+
+  // Interface desabilitada  
+  habilitarBotoes(False);    
 end;
 
 procedure TFrmTesteNFSe.FormDestroy(Sender: TObject);
 begin
-  if Assigned(NFSE_Finalizar) then
-    NFSE_Finalizar;
+  if Assigned(NFSE_Finalizar)
+    then NFSE_Finalizar;
 
   DescarregarACBrNFSe;
 end;
@@ -147,6 +162,8 @@ begin
 
   if Ret = 0 then
     ConfigurarPathsBasicos;
+
+  habilitarBotoes(True);
 end;
 
 function TFrmTesteNFSe.GetLibString(Func: Pointer): string;
@@ -176,8 +193,7 @@ begin
     Ret := GetFunc(Buffer, BufferLen);
 
     // Se o buffer foi pequeno, a lib ajusta BufferLen
-    if BufferLen > 256 then
-    begin
+    if BufferLen > 256 then begin
       FreeMem(Buffer);
       GetMem(Buffer, BufferLen);
       FillChar(Buffer^, BufferLen, 0);
@@ -261,7 +277,7 @@ end;
 
 procedure TFrmTesteNFSe.btnVersaoClick(Sender: TObject);
 begin
-  MemoLog.Lines.Add('Vers√£o: ' + GetLibString(@NFSE_Versao));
+  MemoLog.Lines.Add('Vers„o: ' + GetLibString(@NFSE_Versao));
 end;
 
 function TFrmTesteNFSe.ACBrGetConfigValue(const Sessao, Chave: AnsiString): AnsiString;
@@ -290,16 +306,14 @@ begin
     Ret := F(PAnsiChar(Sessao), PAnsiChar(Chave), Buffer, BufferLen);
 
     // Se a lib ajustou o tamanho para algo maior, realoca e tenta novamente
-    if BufferLen > 256 then
-    begin
+    if BufferLen > 256 then begin
       FreeMem(Buffer);
       GetMem(Buffer, BufferLen);
       FillChar(Buffer^, BufferLen, 0);
       Ret := F(PAnsiChar(Sessao), PAnsiChar(Chave), Buffer, BufferLen);
     end;
 
-    // Mesmo que Ret <> 0, muitas libs devolvem algo em UltimoRetorno.
-    // Aqui retornamos o buffer e voc√™ pode inspecionar Ret no log se quiser.
+    // Mesmo que Ret <> 0, verifica se devolveu em UltimoRetorno.
     Result := AnsiString(Buffer);
   finally
     FreeMem(Buffer);
@@ -311,7 +325,7 @@ var
   Ret: Integer;
 begin
   if not Assigned(NFSE_ConfigGravarValor) then
-    raise Exception.Create('NFSE_ConfigGravarValor n√£o est√° carregada.');
+    raise Exception.Create('NFSE_ConfigGravarValor n„o est·° carregada.');
 
   Ret := NFSE_ConfigGravarValor(PAnsiChar(Sessao), PAnsiChar(Chave), PAnsiChar(Valor));
   MemoLog.Lines.Add(Format('ConfigGravarValor [%s/%s] = "%s" | Ret=%d', [string(Sessao), string(Chave), string(Valor), Ret]));
@@ -323,28 +337,28 @@ var
 begin
   BaseDir := ExtractFilePath(Application.ExeName);
 
-  // Estrutura que voc√™ quer (subdiret√≥rio do EXE)
+  // Proposta de Estrutura de DiretÛrios (a partir do EXE)
   PathSchemas := BaseDir + 'acbr\schemas\NFSe\';
   PathSalvar  := BaseDir + 'log\';
-  IniServicos := BaseDir + 'acbr\ACBrNFSeXServicosRTC.ini'; // ou ACBrNFSeXServicos.ini
-  PathLogLib  := BaseDir + 'log\'; // log da pr√≥pria lib (Principal/LogPath)
+  IniServicos := BaseDir + 'acbr\ACBrNFSeXServicosRTC.ini';
+  PathLogLib  := BaseDir + 'log\'; // log da prÛpria lib (Principal/LogPath)
 
   ForceDirectories(PathSchemas);
   ForceDirectories(PathSalvar);
 
-  // 1) Log da LIB (sess√£o Principal)
+  // 1) Log da LIB (seÁ„o Principal)
   ACBrSetConfigValue('Principal', 'LogPath', AnsiString(PathLogLib));
 
-  // 2) NFSe: paths corretos (sess√£o NFSe)
+  // 2) NFSe: paths corretos (seÁ„o NFSe)
   ACBrSetConfigValue('NFSe', 'PathSchemas', AnsiString(PathSchemas));
   ACBrSetConfigValue('NFSe', 'PathSalvar',  AnsiString(PathSalvar));
   ACBrSetConfigValue('NFSe', 'IniServicos', AnsiString(IniServicos));
 
-  // 3) Emissor Nacional (Padr√£o Nacional)
-  // Conforme exemplo oficial VB6: 0=Provedor, 1=Padr√£o Nacional
+  // 3) Emissor Nacional (Padr„o Nacional)
+  // Conforme exemplo oficial VB6: 0=Provedor, 1=Padr„o Nacional
   ACBrSetConfigValue('NFSe', 'LayoutNFSe', '1');
 
-  // 4) Homologa√ß√£o (mant√©m seguro para testes)
+  // 4) HomologaÁ„o (mantÈm seguro para testes)
   ACBrSetConfigValue('NFSe', 'Ambiente', '2');
 
   MemoLog.Lines.Add('--- Leitura de volta (ConfigLerValor) ---');
@@ -355,8 +369,13 @@ begin
   MemoLog.Lines.Add('NFSe/LayoutNFSe     = ' + string(ACBrGetConfigValue('NFSe', 'LayoutNFSe')));
   MemoLog.Lines.Add('NFSe/Ambiente       = ' + string(ACBrGetConfigValue('NFSe', 'Ambiente')));
 
+  // ConfiguraÁ„o do MunicÌpio e Emitente (OBRIGAT”RIO!)
+  ACBrSetConfigValue('NFSe', 'CodigoMunicipio', '3304557');
+  ACBrSetConfigValue('NFSe', 'Emitente.CNPJ', '33636499000187');
+  ACBrSetConfigValue('NFSe', 'Emitente.InscMun', '4178670');
+  ACBrSetConfigValue('NFSe', 'Emitente.RazSocial', 'PRESTADOR TESTE LTDA');
+
   // Certificado: por padrao usa Windows Store (A1 instalado)
-  // (Se o usuario selecionar PFX e preencher o caminho/senha, aplique pelo botao ou aqui.)
   ConfigurarCertificado;
 end;
 
@@ -365,25 +384,20 @@ var
   NumeroSerie, ArquivoPFX, SenhaPFX: AnsiString;
 begin
   // IMPORTANTE:
-  // Para ACBrLibNFSe (VB6 demo oficial), as chaves do certificado ficam na sessao [DFe]
+  // Para ACBrLibNFSe (VB6 demo oficial), as chaves do certificado ficam na seÁ„o [DFe]
   // e tem os nomes abaixo:
   //   DFe/NumeroSerie
   //   DFe/ArquivoPFX
   //   DFe/Senha
   //   DFe/SSLCryptLib / DFe/SSLHttpLib / DFe/SSLXmlSignLib
-  // (No seu log, Ret=-3 acontecia porque estavamos usando sessao/chaves inexistentes.)
-
   NumeroSerie := '';
   ArquivoPFX  := '';
   SenhaPFX    := '';
 
-  if (Assigned(rbCertPFX) and rbCertPFX.Checked) then
-  begin
+  if (Assigned(rbCertPFX) and rbCertPFX.Checked) then begin
     ArquivoPFX := AnsiString(Trim(edtPFXPath.Text));
     SenhaPFX   := AnsiString(Trim(edtPFXSenha.Text));
-  end
-  else
-  begin
+  end else begin
     // Windows Store (A1 instalado): aqui o usuario informa o Numero de Serie.
     // Obs: a DLL usa apenas o NumeroSerie (sem espacos). Ex: 0123ABCD...
     NumeroSerie := AnsiString(Trim(edtCertSerie.Text));
@@ -393,7 +407,7 @@ begin
   ACBrSetConfigValue('DFe', 'ArquivoPFX',  ArquivoPFX);
   ACBrSetConfigValue('DFe', 'Senha',       SenhaPFX);
 
-  // Mantem os defaults do ACBrLib.ini (0) a menos que voce queira expor isso na tela.
+  // Mantem os defaults do ACBrLib.ini
   // 0 costuma significar OpenSSL em varios modulos ACBrLib.
   ACBrSetConfigValue('DFe', 'SSLCryptLib',  ACBrGetConfigValue('DFe', 'SSLCryptLib'));
   ACBrSetConfigValue('DFe', 'SSLHttpLib',   ACBrGetConfigValue('DFe', 'SSLHttpLib'));
@@ -419,7 +433,7 @@ var
   Ret: Integer;
   Resp: AnsiString;
 begin
-  // Padr√£o ACBrLib (VB6 demo): NFSE_ConsultarSituacao(Protocolo, NumeroLote, buffer, bufferLen)
+  // Padr„o ACBrLib (VB6 demo): NFSE_ConsultarSituacao(Protocolo, NumeroLote, buffer, bufferLen)
   Ret := CallWithBuffer(@NFSE_ConsultarSituacao, '', '', Resp);
   MemoLog.Lines.Add('NFSE_ConsultarSituacao retorno: ' + IntToStr(Ret));
   if Resp <> '' then
@@ -434,32 +448,35 @@ var
   IniPath: string;
   Ret: Integer;
 begin
-  // Layout Nacional (Emissor Nacional): preferimos o layout INI.
-  // Isso evita problemas de schema/encoding no Delphi 6 e segue o modelo do ACBr.
-  IniPath := ExtractFilePath(Application.ExeName) + 'xml\dps_minimo_pf.ini';
-  MemoLog.Lines.Add('INI Usado: ' + IniPath);
-
-  if not FileExists(IniPath) then
-  begin
-    MemoLog.Lines.Add('Arquivo nao encontrado: ' + IniPath);
+  IniPath := ExtractFilePath(Application.ExeName) + 'xml\dps_pf.xml';
+  
+  MemoLog.Lines.Add('=== TESTE DE CARREGAMENTO ===');
+  MemoLog.Lines.Add('Arquivo: ' + IniPath);
+  MemoLog.Lines.Add('Existe? ' + BoolToStr(FileExists(IniPath), True));
+  
+  if not FileExists(IniPath) then begin
+    MemoLog.Lines.Add('ERRO: Arquivo n„o encontrado!');
     Exit;
   end;
-
+  
+  // Limpa lista anterior
   if Assigned(NFSE_LimparLista) then
     NFSE_LimparLista;
-
-  // A DLL aceita "arquivo OU conteudo"; para evitar encoding no Delphi 6,
-  // passamos o CAMINHO do arquivo.
-  Ret := NFSE_CarregarINI(PAnsiChar(AnsiString(IniPath)));
-  MemoLog.Lines.Add('NFSE_CarregarINI retorno: ' + IntToStr(Ret));
-
-  if Ret <> 0 then
-  begin
-    btnEmitir.Enabled := False;
-    MemoLog.Lines.Add('Erro: ' + CallUltimoRetorno);
-  end
-  else
+  
+  // Carrega o XML
+  Ret := NFSE_CarregarXML(PAnsiChar(AnsiString(IniPath)));
+  
+  MemoLog.Lines.Add('Retorno: ' + IntToStr(Ret));
+  
+  if Ret = 0 then begin
+    MemoLog.Lines.Add('? SUCESSO! XML carregado corretamente.');
     btnEmitir.Enabled := True;
+  end else begin
+    MemoLog.Lines.Add('? ERRO ao carregar XML');
+    MemoLog.Lines.Add('Detalhes:');
+    MemoLog.Lines.Add(CallUltimoRetorno);
+    btnEmitir.Enabled := False;
+  end;
 end;
 
 procedure TFrmTesteNFSe.btnEmitirClick(Sender: TObject);
@@ -469,12 +486,11 @@ var
 begin
   btnEmitir.Enabled := False;
 
-  // Padr√£o ACBrLib (VB6 demo): NFSE_Emitir(Lote, ModoEnvio, Imprimir, buffer, bufferLen)
-  // ModoEnvio (demo): 0=Sincrono, 1=LoteAssincrono (mantem seu padrao atual)
+  // Padr„o ACBrLib (VB6 demo): NFSE_Emitir(Lote, ModoEnvio, Imprimir, buffer, bufferLen)
+  // ModoEnvio (demo): 0=Sincrono, 1=LoteAssincrono
   Ret := CallWithBuffer3(@NFSE_Emitir, '1', 1, 0, Resp);
   MemoLog.Lines.Add('NFSE_Emitir retorno: ' + IntToStr(Ret));
-  if Resp <> '' then
-  begin
+  if Resp <> '' then begin
     FUltimaResposta := Resp;
     MemoLog.Lines.Add('Resposta: ' + string(Resp));
   end;
@@ -489,6 +505,53 @@ begin
   if (ssctrl in shift) and (Chr(Key) in ['a', 'A']) then begin
     TMemo(Sender).SelectAll;
   end;
+end;
+
+procedure TFrmTesteNFSe.btnCarregarINIClick(Sender: TObject);
+var
+  IniPath: string;
+  Ret: Integer;
+begin
+  // Layout Nacional (Emissor Nacional)
+  // Evita problemas de schema/encoding no Delphi 6 e segue o modelo do ACBr.
+  IniPath := ExtractFilePath(Application.ExeName) + 'xml\dps_minimo_pf.ini';
+  MemoLog.Lines.Add('INI Usado: ' + IniPath);
+
+  if not FileExists(IniPath) then begin
+    MemoLog.Lines.Add('Arquivo nao encontrado: ' + IniPath);
+    Exit;
+  end;
+
+  if Assigned(NFSE_LimparLista) then
+    NFSE_LimparLista;
+
+  // A DLL aceita "arquivo OU conteudo"; para evitar encoding no Delphi 6,
+  // passamos o CAMINHO do arquivo.
+  Ret := NFSE_CarregarINI(PAnsiChar(AnsiString(IniPath)));
+  MemoLog.Lines.Add('NFSE_CarregarINI retorno: ' + IntToStr(Ret));
+
+  if Ret <> 0 then begin
+    btnEmitir.Enabled := False;
+    MemoLog.Lines.Add('Erro: ' + CallUltimoRetorno);
+  end else
+    btnEmitir.Enabled := True;
+end;
+
+procedure TFrmTesteNFSe.btnCarregarXMLTesteClick(Sender: TObject);
+begin
+  if not Od.Execute then Exit;
+  TestarCarregamentoXML(Od.FileName, MemoLog.Lines);
+end;
+
+procedure TFrmTesteNFSe.habilitarBotoes(valor: boolean);
+begin
+  btnNome.enabled              := valor;
+  btnVersao.enabled            := valor;
+  btnConsultarSituacao.enabled := valor;
+  btnCarregarXML.enabled       := valor;
+  btnCarregarINI.enabled       := valor;
+  btnAplicarCert.enabled       := valor;
+  btnCarregarXMLTeste.enabled  := valor;
 end;
 
 end.

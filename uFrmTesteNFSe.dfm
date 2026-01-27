@@ -38,6 +38,7 @@ object FrmTesteNFSe: TFrmTesteNFSe
       Width = 112
       Height = 46
       Caption = 'Nome'
+      Enabled = False
       TabOrder = 1
       OnClick = btnNomeClick
     end
@@ -47,6 +48,7 @@ object FrmTesteNFSe: TFrmTesteNFSe
       Width = 112
       Height = 46
       Caption = 'Vers'#227'o'
+      Enabled = False
       TabOrder = 2
       OnClick = btnVersaoClick
     end
@@ -56,6 +58,7 @@ object FrmTesteNFSe: TFrmTesteNFSe
       Width = 112
       Height = 46
       Caption = 'Consultar Situa'#231#227'o'
+      Enabled = False
       TabOrder = 3
       OnClick = btnConsultarSituacaoClick
     end
@@ -65,11 +68,12 @@ object FrmTesteNFSe: TFrmTesteNFSe
       Width = 112
       Height = 46
       Caption = 'Carregar XML'
+      Enabled = False
       TabOrder = 4
       OnClick = btnCarregarXMLClick
     end
     object btnEmitir: TButton
-      Left = 587
+      Left = 699
       Top = 6
       Width = 112
       Height = 46
@@ -78,6 +82,16 @@ object FrmTesteNFSe: TFrmTesteNFSe
       TabOrder = 5
       OnClick = btnEmitirClick
     end
+    object btnCarregarINI: TButton
+      Left = 586
+      Top = 6
+      Width = 112
+      Height = 46
+      Caption = 'Carregar INI'
+      Enabled = False
+      TabOrder = 6
+      OnClick = btnCarregarINIClick
+    end
   end
   object MemoLog: TMemo
     Left = 0
@@ -85,6 +99,7 @@ object FrmTesteNFSe: TFrmTesteNFSe
     Width = 887
     Height = 468
     Align = alClient
+    ScrollBars = ssVertical
     TabOrder = 1
     OnKeyUp = MemoLogKeyUp
   end
@@ -175,9 +190,27 @@ object FrmTesteNFSe: TFrmTesteNFSe
         Width = 169
         Height = 30
         Caption = 'Aplicar Certificado'
+        Enabled = False
         TabOrder = 5
         OnClick = btnAplicarCertClick
       end
     end
+    object btnCarregarXMLTeste: TButton
+      Left = 2
+      Top = 270
+      Width = 181
+      Height = 55
+      Caption = 'Teste de Carregamento XML'
+      Enabled = False
+      TabOrder = 1
+      OnClick = btnCarregarXMLTesteClick
+    end
+  end
+  object Od: TOpenDialog
+    DefaultExt = '*.*'
+    Filter = 'Todos os arquivos (*.*)|*.*|Arquivo XML (*.xml)|*.xml'
+    Title = 'Abrir arquivo para teste de carregamento DPS...'
+    Left = 999
+    Top = 27
   end
 end

@@ -3,7 +3,8 @@ program TesteNFSe;
 uses
   Forms,
   uFrmTesteNFSe in 'uFrmTesteNFSe.pas' {FrmTesteNFSe},
-  uACBrNFSeLib in 'uACBrNFSeLib.pas';
+  uACBrNFSeLib in 'uACBrNFSeLib.pas',
+  uTesteRapidoNFSe in 'uTesteRapidoNFSe.pas';
 
 {$R *.res}
 
