@@ -2,3 +2,7 @@
 *.dll
 # Ignorar conteúdo da pasta acbr
 acbr/*
+# Binarios Delphi
+*.dcu
+*.exe
+*.~*
