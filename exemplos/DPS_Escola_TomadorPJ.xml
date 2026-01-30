@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DPS xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.00">
+  <infDPS Id="DPS33304557336364990001872026012700002000000000000002">
+    
+    <!-- Ambiente e identificação -->
+    <tpAmb>2</tpAmb>
+    <dhEmi>2026-01-27T10:00:00-03:00</dhEmi>
+    <verAplic>SISTEMA_ESCOLA_V1.0</verAplic>
+    <serie>UNICA</serie>
+    <nDPS>000000000000002</nDPS>
+    <dCompet>20260127</dCompet>
+    <tpEmit>1</tpEmit>
+    <cLocEmi>3304557</cLocEmi>
+    
+    <!-- PRESTADOR (ESCOLA) -->
+    <prest>
+      <!-- *** ATENÇÃO: Substituir pelos dados reais *** -->
+      <CNPJ>33636499000187</CNPJ>
+      <xNome>NOME DA ESCOLA LTDA</xNome>
+      
+      <!-- Endereço Nacional -->
+      <enderNac>
+        <xLgr>Rua da Escola</xLgr>
+        <nro>100</nro>
+        <xBairro>Centro</xBairro>
+        <cMun>3304557</cMun>
+        <UF>RJ</UF>
+        <CEP>20000000</CEP>
+      </enderNac>
+      
+      <!-- Regime Tributário -->
+      <regTrib>
+        <opSimpNac>2</opSimpNac>
+        <regEspTrib>0</regEspTrib>
+      </regTrib>
+    </prest>
+    
+    <!-- TOMADOR PESSOA JURÍDICA -->
+    <toma>
+      <CNPJ>11222333000181</CNPJ>
+      <xNome>EMPRESA EXEMPLO LTDA</xNome>
+      
+      <!-- Endereço do tomador -->
+      <end>
+        <xLgr>Avenida Corporativa</xLgr>
+        <nro>500</nro>
+        <xCompl>Sala 201</xCompl>
+        <xBairro>Centro</xBairro>
+        <cMun>3304557</cMun>
+        <UF>RJ</UF>
+        <CEP>20200000</CEP>
+      </end>
+      
+      <email>rh@empresaexemplo.com.br</email>
+    </toma>
+    
+    <!-- SERVIÇO -->
+    <serv>
+      <!-- Local da Prestação -->
+      <locPrest>
+        <cLocPrestacao>3304557</cLocPrestacao>
+      </locPrest>
+      
+      <!-- Código do Serviço -->
+      <cServ>
+        <!-- Código Nacional LC 116/2003 -->
+        <cTribNac>080103</cTribNac>
+        <xDescServ>MENSALIDADE ESCOLAR - JANEIRO/2026 - ALUNO: PEDRO OLIVEIRA SOUZA - TURMA: 2º ANO - ENSINO MEDIO - PERIODO: 01/2026 - PAGAMENTO: EMPRESA EXEMPLO LTDA</xDescServ>
+      </cServ>
+    </serv>
+    
+    <!-- VALORES -->
+    <valores>
+      <!-- Valor do Serviço Prestado -->
+      <vServPrest>
+        <vServ>2000.00</vServ>
+      </vServPrest>
+      
+      <!-- Tributação -->
+      <trib>
+        <!-- Tributação Municipal (ISSQN) -->
+        <tribMun>
+          <!-- 4 = Isento (conforme configuração da escola) -->
+          <tribISSQN>4</tribISSQN>
+          <tpRetISSQN>1</tpRetISSQN>
+        </tribMun>
+        
+        <!-- Total de Tributos Aproximados -->
+        <totTrib>
+          <pTotTribSN>0.00</pTotTribSN>
+        </totTrib>
+      </trib>
+    </valores>
+    
+  </infDPS>
+</DPS>

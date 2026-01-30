@@ -37,6 +37,12 @@ type
   TNFSe_ConsultarSituacao = function(const aProtocolo, aNumeroLote: PAnsiChar;
                                      const buffer: PAnsiChar; var bufferLen: Integer): Integer; stdcall;
 
+  // Certificados
+  TNFSE_ObterCertificados = function(
+    const buffer: PAnsiChar; 
+    var bufferLen: Integer
+  ): Integer; stdcall;                                   
+
 var
   // Basico
   NFSE_Inicializar: TACBrNFSe_Inicializar;
@@ -62,9 +68,14 @@ var
   // Operacoes
   NFSE_Emitir: TNFSe_Emitir;
   NFSE_ConsultarSituacao: TNFSe_ConsultarSituacao;
+  
+  // Certificados
+  NFSE_ObterCertificados: TNFSE_ObterCertificados;
 
 function CarregarACBrNFSe(const ADllPath: string): Boolean;
 procedure DescarregarACBrNFSe;
+
+function ObterCertificados: string;
 
 implementation
 
@@ -118,6 +129,9 @@ begin
   @NFSE_Emitir            := GetProc('NFSE_Emitir');
   @NFSE_ConsultarSituacao := GetProc('NFSE_ConsultarSituacao');
 
+  // Certificados
+  @NFSE_ObterCertificados := GetProc('NFSE_ObterCertificados');
+
   Result :=
     Assigned(NFSE_Inicializar) and
     Assigned(NFSE_Finalizar) and
@@ -132,7 +146,8 @@ begin
     Assigned(NFSE_CarregarINI) and
     Assigned(NFSE_LimparLista) and
     Assigned(NFSE_Emitir) and
-    Assigned(NFSE_ConsultarSituacao);
+    Assigned(NFSE_ConsultarSituacao) and
+    Assigned(NFSE_ObterCertificados);
 
   if not Result then
     DescarregarACBrNFSe;
@@ -170,6 +185,34 @@ begin
   // Ops
   NFSE_Emitir := nil;
   NFSE_ConsultarSituacao := nil;
+
+  // Certs
+  NFSE_ObterCertificados := nil;
+end;
+
+function ObterCertificados: string;
+var
+  Ret: Integer;
+  Buffer: array[0..8191] of AnsiChar;
+  BufLen: Integer;
+begin
+  Result := '';
+  
+  if not Assigned(NFSE_ObterCertificados) then
+  begin
+    Result := 'ERRO: Função NFSE_ObterCertificados não carregada';
+    Exit;
+  end;
+  
+  BufLen := SizeOf(Buffer);
+  FillChar(Buffer, BufLen, 0);
+  
+  Ret := NFSE_ObterCertificados(Buffer, BufLen);
+  
+  if Ret = 0 then
+    Result := string(Buffer)
+  else
+    Result := 'ERRO: Falha ao obter certificados. Código: ' + IntToStr(Ret);
 end;
 
 end.

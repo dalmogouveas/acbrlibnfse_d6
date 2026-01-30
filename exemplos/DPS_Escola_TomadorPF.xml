@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DPS xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.00">
+  <infDPS>
+    <tpAmb>2</tpAmb>
+    <verAplic>1.00</verAplic>
+
+    <!-- ========================================= -->
+    <!-- PRESTADOR (ESCOLA) -->
+    <!-- *** OBRIGATÓRIO: Dados REAIS da escola *** -->
+    <!-- ========================================= -->
+    <prest>
+      <CNPJ>33636499000187</CNPJ>
+      <IM>4178670</IM>
+      <xNome>PRESTADOR TESTE</xNome>
+    </prest>
+
+    <!-- ========================================= -->
+    <!-- TOMADOR PESSOA FÍSICA -->
+    <!-- ========================================= -->
+    <toma>
+      <tpToma>1</tpToma>
+      <CPF>11144477735</CPF>
+      <xNome>TOMADOR PF TESTE</xNome>
+    </toma>
+
+    <!-- ========================================= -->
+    <!-- SERVIÇO -->
+    <!-- ========================================= -->
+    <serv>
+      <!-- Código LC 116/2003 Item 08.01 (Ensino) -->
+      <!-- Formato: 4 dígitos sem ponto -->
+      <cServ>0801</cServ>
+      <xDescServ>Teste ACBrLib NFSe - Mensalidade escolar</xDescServ>
+      <vServ>100.00</vServ>
+    </serv>
+
+    <!-- ========================================= -->
+    <!-- VALORES -->
+    <!-- ========================================= -->
+    <valores>
+      <vServ>100.00</vServ>
+      <vBC>100.00</vBC>
+      <vISS>5.00</vISS>
+    </valores>
+
+  </infDPS>
+</DPS>

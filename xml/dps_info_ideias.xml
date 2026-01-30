@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DPS xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.00">
+  <infDPS Id="DPS33304557029065400001642026012700001000000000000001">
+    
+    <!-- Identificação -->
+    <tpAmb>2</tpAmb>
+    <dhEmi>2026-01-30T10:00:00-03:00</dhEmi>
+    <verAplic>INFO_IDEIAS_V1.0</verAplic>
+    <serie>UNICA</serie>
+    <nDPS>000000000000001</nDPS>
+    <dCompet>20260130</dCompet>
+    <tpEmit>1</tpEmit>
+    <cLocEmi>3304557</cLocEmi>
+    
+    <!-- PRESTADOR - INFO IDEIAS -->
+    <prest>
+      <CNPJ>02906540000164</CNPJ>
+      <xNome>INFO IDEIAS SOFTWARE E CONSULTORIA LTDA</xNome>
+      
+      <enderNac>
+        <xLgr>Rua Real Grandeza</xLgr>
+        <nro>108</nro>
+        <xBairro>Botafogo</xBairro>
+        <cMun>3304557</cMun>
+        <UF>RJ</UF>
+        <CEP>22281030</CEP>
+      </enderNac>
+      
+      <regTrib>
+        <opSimpNac>3</opSimpNac>     <!-- 3 = Optante Simples ME/EPP -->
+        <regEspTrib>0</regEspTrib>
+      </regTrib>
+    </prest>
+    
+    <!-- TOMADOR (exemplo) -->
+    <toma>
+      <CPF>12345678901</CPF>
+      <xNome>CLIENTE TESTE</xNome>
+    </toma>
+    
+    <!-- SERVIÇO - Educação -->
+    <serv>
+      <locPrest>
+        <cLocPrestacao>3304557</cLocPrestacao>
+      </locPrest>
+      
+      <cServ>
+        <cTribNac>010501</cTribNac>  <!-- Educação infantil -->
+        <xDescServ>Servico de educacao infantil - mensalidade escolar</xDescServ>
+      </cServ>
+    </serv>
+    
+    <!-- VALORES -->
+    <valores>
+      <vServPrest>
+        <vServ>500.00</vServ>
+      </vServPrest>
+      
+      <trib>
+        <tribMun>
+          <tribISSQN>1</tribISSQN>     <!-- 1 = Tributável -->
+          <tpRetISSQN>1</tpRetISSQN>   <!-- 1 = Não retido -->
+        </tribMun>
+        
+        <totTrib>
+          <pTotTribSN>13.25</pTotTribSN>  <!-- Percentual Simples Nacional -->
+        </totTrib>
+      </trib>
+    </valores>
+    
+  </infDPS>
+</DPS>

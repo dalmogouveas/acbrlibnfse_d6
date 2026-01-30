@@ -1,0 +1,302 @@
+═══════════════════════════════════════════════════════════
+  TESTE DE EMISSÃO NFS-e NACIONAL - ESCOLA
+  Versão 1.0.0 - Janeiro/2026
+═══════════════════════════════════════════════════════════
+
+IMPORTANTE: Este é um programa de TESTE para validação da emissão
+de NFS-e no novo sistema nacional obrigatório desde janeiro/2026.
+
+═══════════════════════════════════════════════════════════
+1. REQUISITOS OBRIGATÓRIOS
+═══════════════════════════════════════════════════════════
+
+✓ Certificado Digital A1 do CNPJ da ESCOLA instalado ou arquivo PFX
+✓ Escola credenciada no portal nacional NFS-e (Sefin)
+✓ Inscrição Municipal regularizada
+✓ Ambiente de homologação liberado no portal
+✓ Windows com .NET Framework instalado
+
+ATENÇÃO: SEM O CERTIFICADO A1 DO CNPJ DA ESCOLA, 
+         O SISTEMA NÃO FUNCIONARÁ!
+
+═══════════════════════════════════════════════════════════
+2. ESTRUTURA DE PASTAS
+═══════════════════════════════════════════════════════════
+
+TesteNFSeEscola\
+├── TesteNFSeEscola.exe        ← Executar este arquivo
+├── acbr\                      ← DLLs e componentes ACBr
+│   ├── ACBrNFSe32.dll
+│   ├── libeay32.dll
+│   ├── ssleay32.dll
+│   ├── libxml2.dll
+│   ├── ACBrNFSeXServicosRTC.ini
+│   └── schemas\NFSe\          ← Schemas XML do padrão nacional
+│       ├── DPS_v1.00.xsd
+│       ├── NFSe_v1.00.xsd
+│       └── tiposComplexos_v1.00.xsd
+├── exemplos\                  ← Arquivos de exemplo (DPS)
+│   ├── DPS_Escola_TomadorPF.ini
+│   ├── DPS_Escola_TomadorPF.xml
+│   ├── DPS_Escola_TomadorPJ.ini
+│   └── DPS_Escola_TomadorPJ.xml
+├── logs\                      ← Logs e XMLs gerados (IMPORTANTE!)
+│   ├── Log_AAAAMMDD_HHNNSS.txt
+│   └── [XMLs das notas emitidas]
+└── LEIA-ME.txt               ← Este arquivo
+
+═══════════════════════════════════════════════════════════
+3. PASSO A PASSO - COMO USAR
+═══════════════════════════════════════════════════════════
+
+PASSO 1: CONFIGURAÇÃO (Aba "1. Configuração")
+──────────────────────────────────────────────
+
+1.1. Preencher dados da escola:
+   - CNPJ: [informar CNPJ da escola]
+   - Inscrição Municipal: [informar IM]
+   - Razão Social: [informar nome da escola]
+   - Código Município: 3304557 (Rio de Janeiro - já preenchido)
+   - UF: RJ (já selecionado)
+   - Série: UNICA (já preenchido)
+   - Ambiente: Homologação (para testes)
+
+1.2. Configurar certificado digital:
+   OPÇÃO A - Arquivo PFX:
+   ✓ Selecionar "Arquivo PFX (A1)"
+   ✓ Clicar em "..." e selecionar o arquivo .pfx
+   ✓ Informar a senha do certificado
+   ✓ Clicar em "Testar Certificado" para validar
+   
+   OPÇÃO B - Windows Store:
+   ✓ Selecionar "Windows Store (Certificado Instalado)"
+   ✓ O certificado já instalado será usado automaticamente
+   ✓ ATENÇÃO: Certifique-se de que o certificado correto está instalado!
+
+1.3. Inicializar o sistema:
+   ✓ Clicar no botão "INICIALIZAR BIBLIOTECA"
+   ✓ Aguardar mensagem de sucesso
+   ✓ Verificar o log de configuração (não deve ter erros)
+
+PASSO 2: EMISSÃO (Aba "2. Emissão")
+────────────────────────────────────
+
+2.1. Selecionar formato da DPS:
+   ✓ Arquivo INI (mais simples) OU
+   ✓ Arquivo XML (padrão oficial)
+
+2.2. Carregar DPS de exemplo ou própria:
+   OPÇÃO A - Usar exemplo fornecido:
+   ✓ Clicar em "Usar Exemplo PF" (tomador pessoa física) OU
+   ✓ Clicar em "Usar Exemplo PJ" (tomador pessoa jurídica)
+   
+   OPÇÃO B - Usar arquivo próprio:
+   ✓ Clicar em "Selecionar..."
+   ✓ Escolher seu arquivo INI ou XML
+   ✓ Clicar em "Carregar DPS"
+
+2.3. Configurar emissão:
+   ✓ Número do Lote: 1 (ou qualquer número sequencial)
+   ✓ Modo de Envio: "Síncrono (Padrão Nacional)" ← IMPORTANTE!
+
+2.4. Emitir a NFS-e:
+   ✓ Clicar em "EMITIR NFS-e"
+   ✓ Aguardar processamento
+   ✓ Verificar resultado no log de emissão
+
+═══════════════════════════════════════════════════════════
+4. INTERPRETAR RESULTADOS
+═══════════════════════════════════════════════════════════
+
+✓ SUCESSO:
+  - Mensagem "✓ SUCESSO! NFS-e EMITIDA!"
+  - XML da nota gravado na pasta "logs"
+  - Pode visualizar o XML no navegador ou editor
+
+✗ ERRO - "Serviço não implementado":
+  - Modo de envio incorreto
+  - Solução: Usar "Síncrono (Padrão Nacional)"
+
+✗ ERRO - Problemas com certificado:
+  - Certificado errado (CPF ao invés de CNPJ)
+  - Senha incorreta
+  - Certificado vencido
+  - Solução: Verificar certificado e senha
+
+✗ ERRO - Credenciamento:
+  - Escola não cadastrada no sistema nacional
+  - Ambiente de homologação não liberado
+  - Solução: Verificar cadastro no portal nacional
+
+═══════════════════════════════════════════════════════════
+5. ARQUIVOS DE EXEMPLO (Pasta "exemplos")
+═══════════════════════════════════════════════════════════
+
+DPS_Escola_TomadorPF.ini / .xml
+────────────────────────────────
+- Tomador: Pessoa Física (CPF)
+- Serviço: Ensino Fundamental
+- Código Tributário: 080102
+- Valor: R$ 1.500,00
+
+DPS_Escola_TomadorPJ.ini / .xml
+────────────────────────────────
+- Tomador: Pessoa Jurídica (CNPJ)
+- Serviço: Ensino Médio
+- Código Tributário: 080103
+- Valor: R$ 2.000,00
+
+ATENÇÃO: Nos exemplos, os CPF/CNPJ são fictícios!
+         Substitua pelos dados reais antes de usar em produção.
+
+═══════════════════════════════════════════════════════════
+6. CÓDIGOS DE SERVIÇO EDUCACIONAL
+═══════════════════════════════════════════════════════════
+
+LC 116/2003 - Item 08.01: Ensino regular
+
+Códigos Tributários Municipais (Rio de Janeiro):
+- 080101 = Pré-escola/Maternal
+- 080102 = Ensino Fundamental
+- 080103 = Ensino Médio
+- 041702 = Creche
+
+TODOS usam ItemListaServico = 080100 (código nacional)
+
+O que diferencia é o CodigoTributacaoMunicipio conforme
+o nível de ensino do aluno.
+
+═══════════════════════════════════════════════════════════
+7. LOGS E ARQUIVOS GERADOS
+═══════════════════════════════════════════════════════════
+
+Pasta "logs\" contém:
+
+1. Log_AAAAMMDD_HHNNSS.txt
+   - Log textual com todas as operações
+   - Dados sensíveis censurados automaticamente
+   - Use este arquivo para diagnóstico de erros
+
+2. XMLs gerados:
+   - DPS enviado (documento original)
+   - XML de envio (com envelope SOAP)
+   - XML de retorno (resposta do WebService)
+   - NFSe emitida (se sucesso)
+
+IMPORTANTE: Em caso de erro, COMPACTAR a pasta "logs"
+            inteira e enviar para análise.
+
+═══════════════════════════════════════════════════════════
+8. SEGURANÇA E PRIVACIDADE
+═══════════════════════════════════════════════════════════
+
+✓ Dados sensíveis censurados nos logs:
+  - Senhas de certificados
+  - Caminhos completos de arquivos
+  - CPF (parcialmente)
+
+✓ Certificados:
+  - Nunca compartilhe o arquivo .pfx
+  - Nunca compartilhe a senha
+  - Mantenha o certificado em local seguro
+
+✓ Logs:
+  - Podem ser compartilhados com segurança
+  - Não contêm senhas ou dados sensíveis completos
+
+═══════════════════════════════════════════════════════════
+9. PROBLEMAS COMUNS E SOLUÇÕES
+═══════════════════════════════════════════════════════════
+
+PROBLEMA: "DLL não encontrada"
+SOLUÇÃO: Verificar se a pasta "acbr" está completa
+
+PROBLEMA: "Certificado inválido"
+SOLUÇÃO: Usar certificado A1 do CNPJ da escola (não CPF!)
+
+PROBLEMA: "Erro de schema"
+SOLUÇÃO: Verificar se a pasta "acbr\schemas\NFSe" existe
+
+PROBLEMA: "Serviço não implementado"
+SOLUÇÃO: Usar modo "Síncrono" na emissão
+
+PROBLEMA: "Emissor não credenciado"
+SOLUÇÃO: Cadastrar escola no portal nacional
+
+PROBLEMA: "IM inválida"
+SOLUÇÃO: Verificar Inscrição Municipal na prefeitura
+
+═══════════════════════════════════════════════════════════
+10. PRÓXIMOS PASSOS APÓS TESTE
+═══════════════════════════════════════════════════════════
+
+1. Testar emissão em HOMOLOGAÇÃO:
+   ✓ Emitir pelo menos 5 notas de teste
+   ✓ Validar dados das notas geradas
+   ✓ Testar com tomadores PF e PJ
+   ✓ Testar diferentes níveis de ensino
+
+2. Validar XMLs gerados:
+   ✓ Abrir XML da NFSe no navegador
+   ✓ Conferir dados da escola
+   ✓ Conferir dados do tomador
+   ✓ Conferir valores e tributos
+
+3. Integrar com sistema real:
+   ✓ Gerar DPS a partir do sistema de gestão
+   ✓ Automatizar processo de emissão
+   ✓ Implementar log de auditoria
+   ✓ Criar rotina de backup dos XMLs
+
+4. Migrar para PRODUÇÃO:
+   ✓ Solicitar liberação no portal nacional
+   ✓ Mudar ambiente de "Homologação" para "Produção"
+   ✓ Fazer emissão de teste real
+   ✓ Acompanhar primeiras emissões
+
+═══════════════════════════════════════════════════════════
+11. SUPORTE E CONTATOS
+═══════════════════════════════════════════════════════════
+
+Suporte Técnico NFS-e Nacional:
+- Portal: https://nfse.sefin.gov.br (VERIFICAR URL OFICIAL)
+- Documentação oficial disponível no portal
+
+ACBr - Projeto Brasil:
+- Site: https://www.projetoacbr.com.br
+- Fórum: https://www.projetoacbr.com.br/forum
+
+Desenvolvedor:
+- Dalmo / Info Ideias Software
+- [Seu contato aqui]
+
+═══════════════════════════════════════════════════════════
+12. OBSERVAÇÕES FINAIS
+═══════════════════════════════════════════════════════════
+
+⚠ Este programa usa a versão DEMO do ACBrLibNFSe
+  - Funcional para testes
+  - Para produção, adquirir versão completa
+
+⚠ Mantenha backups dos XMLs emitidos
+  - Obrigação fiscal de 5 anos
+  - Necessário para contingência
+
+⚠ A migração para o padrão nacional é OBRIGATÓRIA
+  - Sistema municipal (Nota Carioca) descontinuado
+  - Prazo legal já vencido
+  - Urgência na regularização
+
+⚠ Certifique-se de estar credenciado
+  - Sem credenciamento, não emite
+  - Processo pode levar alguns dias
+  - Inicie o quanto antes
+
+═══════════════════════════════════════════════════════════
+
+Boa sorte nos testes!
+
+Qualquer dúvida, consulte a aba "3. Ajuda" no programa
+ou entre em contato com o suporte técnico.
+
+═══════════════════════════════════════════════════════════
